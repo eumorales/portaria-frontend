@@ -1,3 +1,5 @@
+// Requisicões
+
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080/api";
 
@@ -67,7 +69,6 @@ class ApiService {
         throw new Error(`API Error: ${response.status} ${response.statusText}`);
       }
 
-      // Para operações DELETE que retornam 204 No Content, não tentar fazer parse JSON
       if (
         response.status === 204 ||
         response.headers.get("content-length") === "0"
@@ -75,7 +76,6 @@ class ApiService {
         return undefined as T;
       }
 
-      // Verificar se a resposta tem conteúdo JSON
       const contentType = response.headers.get("content-type");
       if (contentType && contentType.includes("application/json")) {
         const text = await response.text();
@@ -85,7 +85,6 @@ class ApiService {
         return JSON.parse(text);
       }
 
-      // Se não for JSON, retornar undefined
       return undefined as T;
     } catch (error) {
       console.error("API Request Error:", error);
@@ -93,7 +92,6 @@ class ApiService {
     }
   }
 
-  // Dashboard
   async getDashboard() {
     return this.request<{
       itensDisponiveis: number;
@@ -103,7 +101,6 @@ class ApiService {
     }>("/portaria/dashboard");
   }
 
-  // Users
   async getUsers(): Promise<User[]> {
     return this.request<User[]>("/users");
   }
@@ -136,7 +133,6 @@ class ApiService {
     });
   }
 
-  // Items
   async getItems(): Promise<Item[]> {
     return this.request<Item[]>("/items");
   }
@@ -178,7 +174,6 @@ class ApiService {
     });
   }
 
-  // Reservas
   async getReservas(): Promise<ReservaResponse[]> {
     return this.request<ReservaResponse[]>("/reservas");
   }
@@ -224,14 +219,12 @@ class ApiService {
     });
   }
 
-  // Limpar todas as reservas
   async limparTodasReservas(): Promise<LimparReservasResponse> {
     return this.request<LimparReservasResponse>("/portaria/limpar", {
       method: "DELETE",
     });
   }
 
-  // Portaria - Crachá
   async lerCracha(matricula: string): Promise<User> {
     return this.request<User>(`/portaria/cracha/${matricula}`);
   }

@@ -49,7 +49,6 @@ export default function UsuariosPage() {
   const [editingUser, setEditingUser] = useState<User | null>(null);
   const [deletingUserId, setDeletingUserId] = useState<string | null>(null);
 
-  // Form state - inicializado com valores padrão para evitar undefined
   const [formData, setFormData] = useState({
     nome: "",
     tipo: "ALUNO" as "ALUNO" | "PROFESSOR" | "PORTEIRO",
@@ -61,7 +60,6 @@ export default function UsuariosPage() {
     fetchUsuarios();
   }, []);
 
-  // Limpar alertas após 5 segundos
   useEffect(() => {
     if (error || success) {
       const timer = setTimeout(() => {
@@ -96,14 +94,12 @@ export default function UsuariosPage() {
       if (editingUser) {
         const updatedUser = await api.updateUser(editingUser.id, formData);
         setSuccess("Usuário atualizado com sucesso!");
-        // Atualizar o usuário na lista local
         setUsuarios((prev) =>
           prev.map((user) => (user.id === editingUser.id ? updatedUser : user))
         );
       } else {
         const newUser = await api.createUser(formData);
         setSuccess("Usuário criado com sucesso!");
-        // Adicionar o novo usuário à lista local
         setUsuarios((prev) => [...prev, newUser]);
       }
 
@@ -137,17 +133,14 @@ export default function UsuariosPage() {
     setSuccess("");
 
     try {
-      // Primeiro, remover da interface imediatamente para feedback visual
       setUsuarios((prev) => prev.filter((user) => user.id !== id));
 
-      // Depois fazer a chamada para a API
       await api.deleteUser(id);
       setSuccess("Usuário excluído com sucesso!");
     } catch (error) {
       console.error("Erro ao excluir usuário:", error);
       setError("Erro ao excluir usuário");
 
-      // Se houve erro, recarregar a lista para restaurar o estado correto
       await fetchUsuarios();
     } finally {
       setDeletingUserId(null);
@@ -213,7 +206,6 @@ export default function UsuariosPage() {
       <Header />
 
       <div className="container mx-auto px-4 py-8">
-        {/* Header */}
         <div className="flex justify-between items-center mb-8">
           <div>
             <h1 className="text-3xl font-bold text-gray-900 mb-2">
@@ -253,7 +245,7 @@ export default function UsuariosPage() {
                     onChange={(e) =>
                       setFormData({ ...formData, nome: e.target.value })
                     }
-                    placeholder="Ex: João Silva"
+                    placeholder="Ex: Gilberto Morales"
                     required
                   />
                 </div>
@@ -283,7 +275,7 @@ export default function UsuariosPage() {
                     onChange={(e) =>
                       setFormData({ ...formData, matricula: e.target.value })
                     }
-                    placeholder="Ex: 2024001"
+                    placeholder="Ex: 2023010187"
                     required
                   />
                 </div>
@@ -296,7 +288,7 @@ export default function UsuariosPage() {
                     onChange={(e) =>
                       setFormData({ ...formData, email: e.target.value })
                     }
-                    placeholder="Ex: joao@exemplo.com"
+                    placeholder="Ex: eu@gilbertomorales.com"
                     required
                   />
                 </div>
@@ -325,7 +317,6 @@ export default function UsuariosPage() {
           </Dialog>
         </div>
 
-        {/* Alertas */}
         {error && (
           <Alert className="mb-6 border-red-200 bg-red-50">
             <XCircle className="h-4 w-4 text-red-600" />
@@ -344,7 +335,6 @@ export default function UsuariosPage() {
           </Alert>
         )}
 
-        {/* Estatísticas */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
           <Card className="bg-white shadow-lg">
             <CardContent className="p-4">
@@ -400,7 +390,6 @@ export default function UsuariosPage() {
           </Card>
         </div>
 
-        {/* Lista de Usuários - Design Melhorado */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {usuarios.map((usuario) => (
             <Card

@@ -38,17 +38,14 @@ export default function PortariaPage() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  // Refs para os inputs
   const matriculaInputRef = useRef<HTMLInputElement>(null);
 
-  // Auto-focus no input principal quando a página carrega
   useEffect(() => {
     if (matriculaInputRef.current) {
       matriculaInputRef.current.focus();
     }
   }, []);
 
-  // Limpar alertas após 5 segundos
   useEffect(() => {
     if (error || success) {
       const timer = setTimeout(() => {
@@ -113,7 +110,6 @@ export default function PortariaPage() {
       const reserva = await api.reservarPorCracha(usuario.matricula, itemId);
       setSuccess(`Reserva realizada: ${reserva.nomeItem}`);
 
-      // Atualizar dados
       const reservas = await api.consultarReservasAtivasPorCracha(
         usuario.matricula
       );
@@ -138,7 +134,6 @@ export default function PortariaPage() {
       const reserva = await api.retirarPorCracha(usuario.matricula, reservaId);
       setSuccess(`Retirada registrada: ${reserva.nomeItem}`);
 
-      // Atualizar dados
       const reservas = await api.consultarReservasAtivasPorCracha(
         usuario.matricula
       );
@@ -161,7 +156,6 @@ export default function PortariaPage() {
       const reserva = await api.devolverPorCracha(usuario.matricula, reservaId);
       setSuccess(`Devolução registrada: ${reserva.nomeItem}`);
 
-      // Atualizar dados
       const reservas = await api.consultarReservasAtivasPorCracha(
         usuario.matricula
       );
@@ -175,7 +169,6 @@ export default function PortariaPage() {
     }
   };
 
-  // Handler para o input principal (matrícula)
   const handleMatriculaSubmit = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && !loading) {
       e.preventDefault();
@@ -225,7 +218,6 @@ export default function PortariaPage() {
           </p>
         </div>
 
-        {/* Busca de Usuário */}
         {!usuario && (
           <Card className="mb-8 bg-white shadow-lg max-w-2xl mx-auto">
             <CardHeader>
@@ -260,7 +252,6 @@ export default function PortariaPage() {
           </Card>
         )}
 
-        {/* Alertas */}
         {error && (
           <Alert className="mb-6 border-red-200 bg-red-50 max-w-4xl mx-auto">
             <XCircle className="h-4 w-4 text-red-600" />
@@ -279,10 +270,8 @@ export default function PortariaPage() {
           </Alert>
         )}
 
-        {/* Informações do Usuário e Ações */}
         {usuario && (
           <>
-            {/* Header do Usuário */}
             <Card className="mb-8 bg-white shadow-lg">
               <CardHeader>
                 <div className="flex justify-between items-start">
@@ -313,7 +302,6 @@ export default function PortariaPage() {
             </Card>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              {/* Reservas Ativas */}
               <Card className="bg-white shadow-lg">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
@@ -387,7 +375,6 @@ export default function PortariaPage() {
                 </CardContent>
               </Card>
 
-              {/* Itens Disponíveis para Reserva */}
               <Card className="bg-white shadow-lg">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">

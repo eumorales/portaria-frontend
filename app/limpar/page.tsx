@@ -17,6 +17,7 @@ import {
   RotateCcw,
   Home,
 } from "lucide-react";
+
 import Link from "next/link";
 
 export default function LimparPage() {
@@ -74,7 +75,6 @@ export default function LimparPage() {
       <Header />
 
       <div className="container mx-auto px-4 py-8">
-        {/* Header */}
         <div className="text-center mb-8">
           <div className="flex items-center justify-center gap-3 mb-4">
             <Trash2 className="h-12 w-12 text-red-600" />
@@ -86,7 +86,6 @@ export default function LimparPage() {
           </p>
         </div>
 
-        {/* Alertas */}
         {error && (
           <Alert className="mb-6 border-red-200 bg-red-50">
             <XCircle className="h-4 w-4 text-red-600" />
@@ -168,7 +167,6 @@ export default function LimparPage() {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
-              {/* Aviso */}
               <div className="bg-red-50 border border-red-200 rounded-lg p-4">
                 <h3 className="font-semibold text-red-800 mb-2">
                   Esta operação irá:
@@ -193,7 +191,6 @@ export default function LimparPage() {
                 </ul>
               </div>
 
-              {/* Confirmação */}
               <div className="space-y-4">
                 <div className="flex items-center space-x-2">
                   <input
@@ -207,8 +204,7 @@ export default function LimparPage() {
                     htmlFor="confirmacao"
                     className="text-sm font-medium text-gray-700"
                   >
-                    Eu entendo que esta operação é irreversível e desejo
-                    prosseguir
+                    Eu entendo que esta operação é irreversível.
                   </label>
                 </div>
 

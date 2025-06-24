@@ -48,7 +48,6 @@ export default function ItensPage() {
   const [editingItem, setEditingItem] = useState<Item | null>(null);
   const [deletingItemId, setDeletingItemId] = useState<string | null>(null);
 
-  // Form state - inicializado com valores padrão para evitar undefined
   const [formData, setFormData] = useState({
     nome: "",
     tipo: "CHAVE" as "CHAVE" | "CONTROLE" | "OUTRO",
@@ -60,7 +59,6 @@ export default function ItensPage() {
     fetchItens();
   }, []);
 
-  // Limpar alertas após 5 segundos
   useEffect(() => {
     if (error || success) {
       const timer = setTimeout(() => {
@@ -134,17 +132,14 @@ export default function ItensPage() {
     setSuccess("");
 
     try {
-      // Primeiro, remover da interface imediatamente para feedback visual
       setItens((prev) => prev.filter((item) => item.id !== id));
 
-      // Depois fazer a chamada para a API
       await api.deleteItem(id);
       setSuccess("Item excluído com sucesso!");
     } catch (error) {
       console.error("Erro ao excluir item:", error);
       setError("Erro ao excluir item");
 
-      // Se houve erro, recarregar a lista para restaurar o estado correto
       await fetchItens();
     } finally {
       setDeletingItemId(null);
@@ -230,7 +225,6 @@ export default function ItensPage() {
       <Header />
 
       <div className="container mx-auto px-4 py-8">
-        {/* Header */}
         <div className="flex justify-between items-center mb-8">
           <div>
             <h1 className="text-3xl font-bold text-gray-900 mb-2">
@@ -341,7 +335,6 @@ export default function ItensPage() {
           </Dialog>
         </div>
 
-        {/* Alertas */}
         {error && (
           <Alert className="mb-6 border-red-200 bg-red-50">
             <XCircle className="h-4 w-4 text-red-600" />
@@ -360,7 +353,6 @@ export default function ItensPage() {
           </Alert>
         )}
 
-        {/* Estatísticas */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
           <Card className="bg-white shadow-lg">
             <CardContent className="p-4">
@@ -403,7 +395,6 @@ export default function ItensPage() {
           </Card>
         </div>
 
-        {/* Lista de Itens - Design Melhorado */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {itens.map((item) => (
             <Card
