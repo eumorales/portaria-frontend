@@ -1,7 +1,8 @@
-// Requisicões
+// Requisições
 
 const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080/api";
+  process.env.NEXT_PUBLIC_API_URL ||
+  "https://c2c4-200-248-5-130.ngrok-free.app/api";
 
 export interface User {
   id: string;
@@ -56,16 +57,26 @@ class ApiService {
   ): Promise<T> {
     const url = `${API_BASE_URL}${endpoint}`;
 
+    console.log(`🚀 Fazendo requisição para: ${url}`);
+
     try {
       const response = await fetch(url, {
         headers: {
           "Content-Type": "application/json",
+          "ngrok-skip-browser-warning": "true", // 🔥 HEADER OBRIGATÓRIO PARA NGROK
+          Accept: "application/json",
           ...options?.headers,
         },
         ...options,
       });
 
+      console.log(
+        `📡 Resposta recebida: ${response.status} ${response.statusText}`
+      );
+
       if (!response.ok) {
+        const errorText = await response.text();
+        console.error(`❌ Erro na API: ${response.status} - ${errorText}`);
         throw new Error(`API Error: ${response.status} ${response.statusText}`);
       }
 
@@ -73,6 +84,7 @@ class ApiService {
         response.status === 204 ||
         response.headers.get("content-length") === "0"
       ) {
+        console.log("✅ Resposta vazia (204 ou sem conteúdo)");
         return undefined as T;
       }
 
@@ -80,14 +92,18 @@ class ApiService {
       if (contentType && contentType.includes("application/json")) {
         const text = await response.text();
         if (text.trim() === "") {
+          console.log("✅ Resposta JSON vazia");
           return undefined as T;
         }
-        return JSON.parse(text);
+        const data = JSON.parse(text);
+        console.log("✅ Dados recebidos:", data);
+        return data;
       }
 
+      console.log("✅ Resposta sem JSON");
       return undefined as T;
     } catch (error) {
-      console.error("API Request Error:", error);
+      console.error("💥 Erro na requisição:", error);
       throw error;
     }
   }
